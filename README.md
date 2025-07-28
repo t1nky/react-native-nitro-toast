@@ -46,7 +46,7 @@ Check out the [stacked presentation guide](./docs/stacked.md) for more info.
   - Duration-based or sticky
   - Color overrides (`titleColor`, `messageColor`, `backgroundColor`)
   - [Custom icon support](./docs/CUSTOM_ICON.md) (via `iconUri`)
-  - Optional haptic feedback
+- **Haptic Feedback Support**
 - **Safe-area aware**
 - **Gesture Dismissal** (swipe to dismiss)
 - **Auto Dismiss Pause** when holding
@@ -76,10 +76,9 @@ showToast('Upload completed!', {
   haptics: true,
 });
 
-// Manual loading toast (sticky)
+// Manual loading toast (useful for loading or sticky toasts)
 const id = showToast('Loading...', { type: 'loading' });
 // Dismiss the toast when your async work is done
-// (useful for loading or sticky toasts)
 dismissToast(id);
 ```
 
