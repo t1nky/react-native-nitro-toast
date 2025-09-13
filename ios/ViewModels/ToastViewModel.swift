@@ -32,7 +32,7 @@ class ToastViewModel: ObservableObject {
             }
             toast = newToast
         }
-        
+
         if config.haptics == true {
             triggerHaptics(for: config.type)
         }

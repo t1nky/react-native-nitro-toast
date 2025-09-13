@@ -62,6 +62,8 @@ namespace margelo::nitro::nitrotoast {
       jni::local_ref<jni::JBoolean> haptics = this->getFieldValue(fieldHaptics);
       static const auto fieldIconUri = clazz->getField<jni::JString>("iconUri");
       jni::local_ref<jni::JString> iconUri = this->getFieldValue(fieldIconUri);
+      static const auto fieldFontFamily = clazz->getField<jni::JString>("fontFamily");
+      jni::local_ref<jni::JString> fontFamily = this->getFieldValue(fieldFontFamily);
       return NitroToastConfig(
         toastId != nullptr ? std::make_optional(toastId->toStdString()) : std::nullopt,
         type->toCpp(),
@@ -74,7 +76,8 @@ namespace margelo::nitro::nitrotoast {
         messageColor != nullptr ? std::make_optional(messageColor->toStdString()) : std::nullopt,
         static_cast<bool>(useOverlay),
         haptics != nullptr ? std::make_optional(static_cast<bool>(haptics->value())) : std::nullopt,
-        iconUri != nullptr ? std::make_optional(iconUri->toStdString()) : std::nullopt
+        iconUri != nullptr ? std::make_optional(iconUri->toStdString()) : std::nullopt,
+        fontFamily != nullptr ? std::make_optional(fontFamily->toStdString()) : std::nullopt
       );
     }
 
@@ -96,7 +99,8 @@ namespace margelo::nitro::nitrotoast {
         value.messageColor.has_value() ? jni::make_jstring(value.messageColor.value()) : nullptr,
         value.useOverlay,
         value.haptics.has_value() ? jni::JBoolean::valueOf(value.haptics.value()) : nullptr,
-        value.iconUri.has_value() ? jni::make_jstring(value.iconUri.value()) : nullptr
+        value.iconUri.has_value() ? jni::make_jstring(value.iconUri.value()) : nullptr,
+        value.fontFamily.has_value() ? jni::make_jstring(value.fontFamily.value()) : nullptr
       );
     }
   };

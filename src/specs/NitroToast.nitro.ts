@@ -59,6 +59,10 @@ export type NitroToastConfig = {
   haptics?: boolean
   /** Your custom icon to display in the toast */
   iconUri?: string
+  /** Custom font family to display in the toast 
+   * @example 'Rubik-Regular'
+  */
+  fontFamily?: string
 }
 
 /**

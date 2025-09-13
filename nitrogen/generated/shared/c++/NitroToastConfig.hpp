@@ -50,10 +50,11 @@ namespace margelo::nitro::nitrotoast {
     bool useOverlay     SWIFT_PRIVATE;
     std::optional<bool> haptics     SWIFT_PRIVATE;
     std::optional<std::string> iconUri     SWIFT_PRIVATE;
+    std::optional<std::string> fontFamily     SWIFT_PRIVATE;
 
   public:
     NitroToastConfig() = default;
-    explicit NitroToastConfig(std::optional<std::string> toastId, AlertToastType type, PresentationToastType presentation, double duration, std::optional<std::string> title, PositionToastType position, std::optional<std::string> backgroundColor, std::optional<std::string> titleColor, std::optional<std::string> messageColor, bool useOverlay, std::optional<bool> haptics, std::optional<std::string> iconUri): toastId(toastId), type(type), presentation(presentation), duration(duration), title(title), position(position), backgroundColor(backgroundColor), titleColor(titleColor), messageColor(messageColor), useOverlay(useOverlay), haptics(haptics), iconUri(iconUri) {}
+    explicit NitroToastConfig(std::optional<std::string> toastId, AlertToastType type, PresentationToastType presentation, double duration, std::optional<std::string> title, PositionToastType position, std::optional<std::string> backgroundColor, std::optional<std::string> titleColor, std::optional<std::string> messageColor, bool useOverlay, std::optional<bool> haptics, std::optional<std::string> iconUri, std::optional<std::string> fontFamily): toastId(toastId), type(type), presentation(presentation), duration(duration), title(title), position(position), backgroundColor(backgroundColor), titleColor(titleColor), messageColor(messageColor), useOverlay(useOverlay), haptics(haptics), iconUri(iconUri), fontFamily(fontFamily) {}
   };
 
 } // namespace margelo::nitro::nitrotoast
@@ -79,7 +80,8 @@ namespace margelo::nitro {
         JSIConverter<std::optional<std::string>>::fromJSI(runtime, obj.getProperty(runtime, "messageColor")),
         JSIConverter<bool>::fromJSI(runtime, obj.getProperty(runtime, "useOverlay")),
         JSIConverter<std::optional<bool>>::fromJSI(runtime, obj.getProperty(runtime, "haptics")),
-        JSIConverter<std::optional<std::string>>::fromJSI(runtime, obj.getProperty(runtime, "iconUri"))
+        JSIConverter<std::optional<std::string>>::fromJSI(runtime, obj.getProperty(runtime, "iconUri")),
+        JSIConverter<std::optional<std::string>>::fromJSI(runtime, obj.getProperty(runtime, "fontFamily"))
       );
     }
     static inline jsi::Value toJSI(jsi::Runtime& runtime, const NitroToastConfig& arg) {
@@ -96,6 +98,7 @@ namespace margelo::nitro {
       obj.setProperty(runtime, "useOverlay", JSIConverter<bool>::toJSI(runtime, arg.useOverlay));
       obj.setProperty(runtime, "haptics", JSIConverter<std::optional<bool>>::toJSI(runtime, arg.haptics));
       obj.setProperty(runtime, "iconUri", JSIConverter<std::optional<std::string>>::toJSI(runtime, arg.iconUri));
+      obj.setProperty(runtime, "fontFamily", JSIConverter<std::optional<std::string>>::toJSI(runtime, arg.fontFamily));
       return obj;
     }
     static inline bool canConvert(jsi::Runtime& runtime, const jsi::Value& value) {
@@ -115,6 +118,7 @@ namespace margelo::nitro {
       if (!JSIConverter<bool>::canConvert(runtime, obj.getProperty(runtime, "useOverlay"))) return false;
       if (!JSIConverter<std::optional<bool>>::canConvert(runtime, obj.getProperty(runtime, "haptics"))) return false;
       if (!JSIConverter<std::optional<std::string>>::canConvert(runtime, obj.getProperty(runtime, "iconUri"))) return false;
+      if (!JSIConverter<std::optional<std::string>>::canConvert(runtime, obj.getProperty(runtime, "fontFamily"))) return false;
       return true;
     }
   };

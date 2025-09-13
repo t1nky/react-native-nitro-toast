@@ -18,7 +18,7 @@ public extension NitroToastConfig {
   /**
    * Create a new instance of `NitroToastConfig`.
    */
-  init(toastId: String?, type: AlertToastType, presentation: PresentationToastType, duration: Double, title: String?, position: PositionToastType, backgroundColor: String?, titleColor: String?, messageColor: String?, useOverlay: Bool, haptics: Bool?, iconUri: String?) {
+  init(toastId: String?, type: AlertToastType, presentation: PresentationToastType, duration: Double, title: String?, position: PositionToastType, backgroundColor: String?, titleColor: String?, messageColor: String?, useOverlay: Bool, haptics: Bool?, iconUri: String?, fontFamily: String?) {
     self.init({ () -> bridge.std__optional_std__string_ in
       if let __unwrappedValue = toastId {
         return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
@@ -57,6 +57,12 @@ public extension NitroToastConfig {
       }
     }(), { () -> bridge.std__optional_std__string_ in
       if let __unwrappedValue = iconUri {
+        return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
+      } else {
+        return .init()
+      }
+    }(), { () -> bridge.std__optional_std__string_ in
+      if let __unwrappedValue = fontFamily {
         return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
       } else {
         return .init()
@@ -265,6 +271,29 @@ public extension NitroToastConfig {
     @inline(__always)
     set {
       self.__iconUri = { () -> bridge.std__optional_std__string_ in
+        if let __unwrappedValue = newValue {
+          return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
+        } else {
+          return .init()
+        }
+      }()
+    }
+  }
+  
+  var fontFamily: String? {
+    @inline(__always)
+    get {
+      return { () -> String? in
+        if let __unwrapped = self.__fontFamily.value {
+          return String(__unwrapped)
+        } else {
+          return nil
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__fontFamily = { () -> bridge.std__optional_std__string_ in
         if let __unwrappedValue = newValue {
           return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
         } else {

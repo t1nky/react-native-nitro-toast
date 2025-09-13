@@ -31,7 +31,8 @@ data class NitroToastConfig
     val messageColor: String?,
     val useOverlay: Boolean,
     val haptics: Boolean?,
-    val iconUri: String?
+    val iconUri: String?,
+    val fontFamily: String?
   ) {
   /* main constructor */
 }
