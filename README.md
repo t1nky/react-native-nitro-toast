@@ -46,6 +46,7 @@ Check out the [stacked presentation guide](./docs/stacked.md) for more info.
   - Duration-based or sticky
   - Color overrides (`titleColor`, `messageColor`, `backgroundColor`)
   - [Custom icon support](./docs/CUSTOM_ICON.md) (via `iconUri`)
+  - Custom font support (via `fontFamily`)
 - **Haptic Feedback Support**
 - **Safe-area aware**
 - **Gesture Dismissal** (swipe to dismiss)
@@ -116,6 +117,7 @@ function handleUpload() {
 | `type`           | `success`, `error`, `info`, `warning`, `default`, `loading` | `'default'` | Predefined visual styles, including loading indicator |
 | `message`        | `string`                     | (required)  | Toast message                              |
 | `title`          | `string`                     | `null`      | Optional title                             |
+| `fontFamily`     | `string`                     | `null`      | Custom font family (e.g. `Rubik, Delius...`)    |
 | `duration`       | `number` (MS)                | `4000`      | Auto-dismiss duration (0 for sticky/manual)       |
 | `position`       | `'top'` \| `'bottom'`        | `'bottom'`  | Toast position                             |
 | `presentation`   | `'stacked'` \| `'alert'`     | `'alert'`   | `alert`: single toast. `stacked`: queue multiple toasts. |
