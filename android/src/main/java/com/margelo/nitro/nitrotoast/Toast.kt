@@ -1,7 +1,10 @@
 package com.margelo.nitro.nitrotoast
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.Typeface
 import androidx.core.graphics.toColorInt
+import android.graphics.Typeface as AndroidTypeface
 
 fun String.toColorOrNull(): Color? =
     try {
@@ -64,4 +67,15 @@ data class Toast(
 
     val messageColor: Color
         get() = config.messageColor?.toColorOrNull() ?: Color.DarkGray
+
+    val fontFamily: FontFamily?
+        get() =
+            config.fontFamily?.let { name ->
+                try {
+                    val tf = AndroidTypeface.create(name, AndroidTypeface.NORMAL)
+                    FontFamily(Typeface(tf))
+                } catch (_: Exception) {
+                    null
+                }
+            }
 }

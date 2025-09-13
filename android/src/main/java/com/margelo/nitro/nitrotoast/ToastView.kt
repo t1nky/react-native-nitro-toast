@@ -36,8 +36,8 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun toastView(toast: Toast) {
 //    val scale by animateFloatAsState(if (toast.isUpdating) 1.05f else 1.0f)
+    val context = LocalContext.current
 
     // Animate overlayColor
     val animatedOverlayColor by animateColorAsState(targetValue = toast.overlayColor, label = "overlayColor")
@@ -83,8 +84,13 @@ fun toastView(toast: Toast) {
                         style =
                             TextStyle(
                                 fontSize = 14.sp,
-                                fontWeight = FontWeight.SemiBold,
                                 color = toast.titleColor,
+                                fontFamily =
+                                    resolveFontFamilyFromReact(
+                                        context,
+                                        toast.config.fontFamily,
+                                        android.graphics.Typeface.BOLD,
+                                    ),
                             ),
                     )
                 }
@@ -98,6 +104,12 @@ fun toastView(toast: Toast) {
                             TextStyle(
                                 fontSize = 13.sp,
                                 color = toast.messageColor,
+                                fontFamily =
+                                    resolveFontFamilyFromReact(
+                                        context,
+                                        toast.config.fontFamily,
+                                        android.graphics.Typeface.NORMAL,
+                                    ),
                             ),
                     )
                 }

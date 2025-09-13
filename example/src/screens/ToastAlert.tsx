@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Button, StyleSheet} from 'react-native';
+import {View, Button, StyleSheet, Text} from 'react-native';
 import {
   showToast,
   showToastPromise,
@@ -55,6 +55,18 @@ const ToastAlert = () => {
     <View style={styles.container}>
       <Button
         title="Show Info Toast"
+        onPress={() =>
+          showToast('This is an informational message', {
+            title: 'Information',
+            type: 'info',
+            position: 'top',
+            haptics: true,
+            fontFamily: 'Rubik',
+          })
+        }
+      />
+      <Button
+        title="Show Info Toast Default Font"
         onPress={() =>
           showToast('This is an informational message', {
             title: 'Information',

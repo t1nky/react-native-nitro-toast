@@ -89,11 +89,19 @@ private struct ToastView: View {
 
             VStack(alignment: .leading) {
                 Text(toast.title)
-                    .font(.footnote)
+                    .font(
+                        toast.config.fontFamily != nil
+                            ? Font.custom(toast.config.fontFamily!, size: 13)
+                            : .footnote
+                    )
                     .fontWeight(.semibold)
                     .foregroundStyle(toast.titleColor)
                 Text(toast.message)
-                    .font(.caption)
+                    .font(
+                        toast.config.fontFamily != nil
+                            ? Font.custom(toast.config.fontFamily!, size: 12)
+                            : .caption
+                    )
                     .foregroundStyle(toast.messageColor)
             }
             Spacer(minLength: 0)
