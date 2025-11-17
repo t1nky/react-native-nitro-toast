@@ -22,6 +22,7 @@ struct ToastStackView: View {
 
 private struct ToastsView: View {
     @ObservedObject var viewModel: ToastViewModel
+    @Namespace private var stackNamespace
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -33,24 +34,12 @@ private struct ToastsView: View {
                         viewModel.isExpanded = false
                     }
             }
-            let layout =
-                viewModel.isExpanded ? AnyLayout(VStackLayout(spacing: 10)) : AnyLayout(ZStackLayout())
-            layout {
-                ForEach(Array(viewModel.toasts.enumerated()), id: \.element.id) { idx, toast in
-                    let index = viewModel.toasts.count - 1 - idx
-                    let yOffset = offsetY(index)
-                    let scale = scale(index)
 
-                    ToastRow(toast: toast, offsetY: yOffset, scale: scale, isExpanded: viewModel.isExpanded) {
-                        viewModel.dismiss(toast.id)
-                    }
-                    .zIndex(Double(idx))
-                }
+            if #available(iOS 16.0, *) {
+                animatedLayoutBody
+            } else {
+                legacyBody
             }
-            .onTapGesture {
-                viewModel.isExpanded.toggle()
-            }
-            .padding(.bottom, 15)
         }
         .animation(.bouncy, value: viewModel.isExpanded)
         .onChange(of: viewModel.toasts.isEmpty) { newValue in
@@ -58,7 +47,85 @@ private struct ToastsView: View {
                 viewModel.isExpanded = false
             }
         }
+        .padding(.bottom, 15)
     }
+
+    // MARK: - Shared toast rows (no layout, just row content)
+
+    @ViewBuilder
+    private func toastRow(for toast: Toast, index: Int) -> some View {
+        let yOffset = offsetY(index)
+        let scale = scale(index)
+
+        ToastRow(
+            toast: toast,
+            offsetY: yOffset,
+            scale: scale,
+            isExpanded: viewModel.isExpanded
+        ) {
+            viewModel.dismiss(toast.id)
+        }
+    }
+
+    // MARK: - iOS 16+ — AnyLayout morph
+
+    @ViewBuilder
+    private var animatedLayoutBody: some View {
+        if #available(iOS 16.0, *) {
+            let layout: AnyLayout =
+                viewModel.isExpanded
+                    ? AnyLayout(VStackLayout(spacing: 10))
+                    : AnyLayout(ZStackLayout())
+
+            layout {
+                ForEach(Array(viewModel.toasts.enumerated()), id: \.element.id) { idx, toast in
+                    let index = viewModel.toasts.count - 1 - idx
+                    toastRow(for: toast, index: index)
+                        .zIndex(Double(idx))
+                }
+            }
+            .onTapGesture {
+                viewModel.isExpanded.toggle()
+            }
+        }
+    }
+
+    // MARK: - iOS 15 fallback — matchedGeometryEffect morph
+
+    @ViewBuilder
+    private var legacyBody: some View {
+        if viewModel.isExpanded {
+            VStack(spacing: 10) {
+                ForEach(Array(viewModel.toasts.enumerated()), id: \.element.id) { idx, toast in
+                    let index = viewModel.toasts.count - 1 - idx
+
+                    toastRow(for: toast, index: index)
+                        // expanded: layout in a vertical stack
+                        .matchedGeometryEffect(id: toast.id, in: stackNamespace)
+                        .zIndex(Double(idx))
+                }
+            }
+            .onTapGesture {
+                viewModel.isExpanded.toggle()
+            }
+        } else {
+            ZStack {
+                ForEach(Array(viewModel.toasts.enumerated()), id: \.element.id) { idx, toast in
+                    let index = viewModel.toasts.count - 1 - idx
+
+                    toastRow(for: toast, index: index)
+                        // collapsed: layout in a ZStack (stacked)
+                        .matchedGeometryEffect(id: toast.id, in: stackNamespace)
+                        .zIndex(Double(idx))
+                }
+            }
+            .onTapGesture {
+                viewModel.isExpanded.toggle()
+            }
+        }
+    }
+
+    // MARK: - Helpers
 
     nonisolated func offsetY(_ index: Int) -> CGFloat {
         let offset = min(CGFloat(index) * 15, 30)
