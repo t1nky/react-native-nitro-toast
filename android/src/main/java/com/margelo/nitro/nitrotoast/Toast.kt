@@ -52,15 +52,14 @@ data class Toast(
         get() = if (config.useOverlay) backgroundColor else Color.White
 
     val title: String
-        get() =
-            config.title ?: when (config.type) {
-                AlertToastType.SUCCESS -> "Success"
-                AlertToastType.ERROR -> "Error Occurred"
-                AlertToastType.INFO -> "Information"
-                AlertToastType.WARNING -> "Warning"
-                AlertToastType.LOADING -> "Loading..."
-                AlertToastType.DEFAULT -> "Notice"
-            }
+        get() = config.title ?: when (config.type) {
+            AlertToastType.SUCCESS -> "Success"
+            AlertToastType.ERROR -> "Error Occurred"
+            AlertToastType.INFO -> "Information"
+            AlertToastType.WARNING -> "Warning"
+            AlertToastType.LOADING -> "Loading..."
+            AlertToastType.DEFAULT -> "Notice"
+        }
 
     val titleColor: Color
         get() = config.titleColor?.toColorOrNull() ?: Color.Black
